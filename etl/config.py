@@ -16,13 +16,7 @@ def _int(key: str, default: int) -> int:
     return int(_str(key, str(default)) or str(default))
 
 
-def _bool(key: str, default: bool) -> bool:
-    raw = _str(key, str(default)).lower()
-    return raw in ("1", "true", "yes", "on")
-
-
 def _path_from_root(key: str, default: str) -> str:
-    """Resolve path relative to project root so 'data/listings.txt' works from any cwd."""
     raw = _str(key, default)
     path = Path(raw)
     if not path.is_absolute():
@@ -41,6 +35,8 @@ REQUEST_TIMEOUT = _int("REQUEST_TIMEOUT", 30000)
 MAX_RETRIES = _int("MAX_RETRIES", 3)
 RETRY_WAIT_SECONDS = _int("RETRY_WAIT_SECONDS", 2)
 PAGE_WAIT_MS = _int("PAGE_WAIT_MS", 3000)
+REVIEWS_EMPTY_MAX_RETRIES = _int("REVIEWS_EMPTY_MAX_RETRIES", 5)
+REVIEWS_TOP_N = max(1, _int("REVIEWS_TOP_N", 5))
 
 USER_AGENT = _str(
     "USER_AGENT",
