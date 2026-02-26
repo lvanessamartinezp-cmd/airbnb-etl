@@ -5,6 +5,7 @@ import config
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from extract import fetch_listing_html
 from transform import transform
+from load import initialize_output, load_record
 
 
 def setup_logger():
@@ -43,8 +44,9 @@ def run_pipeline(input_file):
         logging.warning("No URLs in %s", input_file)
         return
 
-    max_workers = config.MAX_WORKERS
+    initialize_output()
 
+    max_workers = config.MAX_WORKERS
     ok = 0
     fail = 0
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
@@ -58,14 +60,15 @@ def run_pipeline(input_file):
                 continue
             try:
                 data = transform(listing_html)
+                load_record(url_done, data)
                 logging.info(f"Processed successfully: {url_done} (rating=%s, review_count=%s)", data.get("rating"), data.get("review_count"))
                 ok += 1
             except Exception as e:
-                logging.error(f"Failed transform for {url}: {e}")
+                logging.error(f"Failed transform/load for {url}: {e}")
                 fail += 1
 
     logging.info(f"Done. OK: {ok}, Failed: {fail}")
 
 
 if __name__ == "__main__":
-    run_pipeline(config.LISTINGS_FILE)
+    run_pipeline(config.LISTINGS_FILE_TEST)

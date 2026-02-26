@@ -33,6 +33,7 @@ def _path_from_root(key: str, default: str) -> str:
 # Pipeline
 LISTINGS_FILE = _path_from_root("LISTINGS_FILE", "data/listings.txt")
 LISTINGS_FILE_TEST = _path_from_root("LISTINGS_FILE_TEST", "data/listings_test.txt")
+OUTPUT_FILE = _path_from_root("OUTPUT_FILE", "data/output.csv")
 MAX_WORKERS = max(1, _int("MAX_WORKERS", 4))
 
 # Extract: request and retries
