@@ -16,6 +16,11 @@ def _int(key: str, default: int) -> int:
     return int(_str(key, str(default)) or str(default))
 
 
+def _bool(key: str, default: bool) -> bool:
+    raw = _str(key, str(default)).lower()
+    return raw in ("1", "true", "yes", "on")
+
+
 def _path_from_root(key: str, default: str) -> str:
     """Resolve path relative to project root so 'data/listings.txt' works from any cwd."""
     raw = _str(key, default)
@@ -27,6 +32,7 @@ def _path_from_root(key: str, default: str) -> str:
 
 # Pipeline
 LISTINGS_FILE = _path_from_root("LISTINGS_FILE", "data/listings.txt")
+LISTINGS_FILE_TEST = _path_from_root("LISTINGS_FILE_TEST", "data/listings_test.txt")
 MAX_WORKERS = max(1, _int("MAX_WORKERS", 4))
 
 # Extract: request and retries
@@ -35,7 +41,6 @@ MAX_RETRIES = _int("MAX_RETRIES", 3)
 RETRY_WAIT_SECONDS = _int("RETRY_WAIT_SECONDS", 2)
 PAGE_WAIT_MS = _int("PAGE_WAIT_MS", 3000)
 
-# Extract: browser
 USER_AGENT = _str(
     "USER_AGENT",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
