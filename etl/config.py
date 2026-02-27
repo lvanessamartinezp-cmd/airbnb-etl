@@ -16,13 +16,7 @@ def _int(key: str, default: int) -> int:
     return int(_str(key, str(default)) or str(default))
 
 
-def _bool(key: str, default: bool) -> bool:
-    raw = _str(key, str(default)).lower()
-    return raw in ("1", "true", "yes", "on")
-
-
 def _path_from_root(key: str, default: str) -> str:
-    """Resolve path relative to project root so 'data/listings.txt' works from any cwd."""
     raw = _str(key, default)
     path = Path(raw)
     if not path.is_absolute():
@@ -41,6 +35,8 @@ REQUEST_TIMEOUT = _int("REQUEST_TIMEOUT", 30000)
 MAX_RETRIES = _int("MAX_RETRIES", 3)
 RETRY_WAIT_SECONDS = _int("RETRY_WAIT_SECONDS", 2)
 PAGE_WAIT_MS = _int("PAGE_WAIT_MS", 3000)
+REVIEWS_EMPTY_MAX_RETRIES = _int("REVIEWS_EMPTY_MAX_RETRIES", 5)
+REVIEWS_TOP_N = max(1, _int("REVIEWS_TOP_N", 5))
 
 USER_AGENT = _str(
     "USER_AGENT",
@@ -50,3 +46,9 @@ USER_AGENT = _str(
 VIEWPORT_WIDTH = _int("VIEWPORT_WIDTH", 1920)
 VIEWPORT_HEIGHT = _int("VIEWPORT_HEIGHT", 1080)
 LOCALE = _str("LOCALE", "es-ES")
+
+# AI insights (Groq) – usado por etl/insights.py
+ENABLE_AI_INSIGHTS = _str("ENABLE_AI_INSIGHTS", "false").lower() in ("1", "true", "yes", "on")
+GROQ_API_KEY = _str("GROQ_API_KEY", "")
+GROQ_URL = _str("GROQ_URL", "https://api.groq.com/openai/v1/chat/completions")
+GROQ_MODEL = _str("GROQ_MODEL", "llama-3.1-8b-instant")
