@@ -46,3 +46,9 @@ USER_AGENT = _str(
 VIEWPORT_WIDTH = _int("VIEWPORT_WIDTH", 1920)
 VIEWPORT_HEIGHT = _int("VIEWPORT_HEIGHT", 1080)
 LOCALE = _str("LOCALE", "es-ES")
+
+# AI insights (Groq) – usado por etl/insights.py
+ENABLE_AI_INSIGHTS = _str("ENABLE_AI_INSIGHTS", "false").lower() in ("1", "true", "yes", "on")
+GROQ_API_KEY = _str("GROQ_API_KEY", "")
+GROQ_URL = _str("GROQ_URL", "https://api.groq.com/openai/v1/chat/completions")
+GROQ_MODEL = _str("GROQ_MODEL", "llama-3.1-8b-instant")

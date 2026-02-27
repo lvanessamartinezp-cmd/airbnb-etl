@@ -1,5 +1,6 @@
 import json
 from bs4 import BeautifulSoup
+from insights import generate_ai_insights
 
 
 def extract_comments(html_content):
@@ -47,8 +48,11 @@ def extract_metrics(html):
 def transform(html_listing, reviews_html):
     rating, review_count = extract_metrics(html_listing)
     reviews = extract_comments(reviews_html) if reviews_html else []
+    highlight, opportunity = generate_ai_insights(reviews)
     return {
         "rating": rating,
         "review_count": review_count,
         "reviews": reviews,
+        "highlight": highlight,
+        "opportunity": opportunity,
     }
