@@ -1,0 +1,4 @@
+# Use Python 3.10, 3.11 or 3.12 (greenlet/Playwright not compatible with 3.13)
+playwright==1.42.0
+tenacity==8.2.3
+python-dotenv==1.0.1
